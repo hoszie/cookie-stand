@@ -1,43 +1,102 @@
-function Stores( name, minCust, maxCust, cookieAvg, id) {
+function Stores( name, minCust, maxCust, cookieAvg) {
     this.name = name;
     this.minCust = minCust;
     this.maxCust = maxCust;
-    this.cookieAvg = cookieAvg;
-    this.avgHour = [];
-    this.hourlyCookieCount = [ '6am: ','7am: ','8am: ','9am: ','10am: ','11am: ','12pm: ','1pm: ','2pm: ','3pm: ','4pm: ','5pm: ','6pm: ','7pm: ','8pm: '];
-    this.id = id;
+    this.cookieAvg = cookieAvg;                 
+    this.avgHour = [];                          
+    this.hourlyCookieCount = [ '6am: ','7am: ','8am: ','9am: ','10am: ','11am: ','12pm: ','1pm: ','2pm: ','3pm: ','4pm: ','5pm: ','6pm: ','7pm: ','8pm: '];  //
+    this.total = 0;
     this.renderRow();
 }
 
 Stores.prototype.averageCook = function () {
-        for (var i = 0; i < this.hourlyCookieCount.length; i++) {
-            var rando = (Math.floor(Math.random() * (this.maxCust - this.minCust) + this.minCust * this.cookieAvg));
-            this.avgHour.push( rando );
-        }
-        return this.avgHour;
-    }
+    for ( var i = 0; i < this.hourlyCookieCount.length; i++ ) {
+        var rando = ( Math.floor( Math.random() * ( this.maxCust - this.minCust ) + this.minCust * this.cookieAvg ));
+        this.avgHour.push( rando );
+    }        
+        
+};
+
+Stores.prototype.getTotal = function () {
+    for( i = 0; i < this.avgHour.length; i++ ) {
+        this.total += this.avgHour[i];
+    } 
+};
 
 Stores.prototype.renderRow = function () {
     this.averageCook();
-    console.log(this.agvHour);
+    this.getTotal();
+    console.log(this.avgHour);
     var tbody = document.getElementsByTagName( 'tbody')[0];
     var newRow = document.createElement( 'tr' );
-    var title = document.createElement( 'td' );
+    
+    var title = document.createElement( 'th' );
     title.innerHTML = this.name;
     newRow.appendChild( title );
-     for (var i = 0; i < this.avgHour.length; i++ ) {
+     
+    for ( var i = 0; i < this.avgHour.length; i++ ) {
         var newCell = document.createElement( 'td' );
         newCell.innerText = this.avgHour[i];
-        newRow.appendChild( newCell);
+        newRow.appendChild( newCell );
     }
-        tbody.appendChild( newRow );
+    var titleTotal = document.createElement( 'td' );
+    titleTotal.innerText = this.total;
+    newRow.appendChild( titleTotal );
+    tbody.appendChild( newRow );
+};
+
+var form = document.getElementById( 'new-store' );
+
+form.addEventListener( 'submit', function () {
+    event.preventDefault();
+    var newShop = new Stores( this.question1.value, this.question2.value, this.question3.value, this.question4.value );
+});
+    
+var pdxAirport = new Stores( 'PDX Airport', 23, 65, 6.3, 'pdx-airport' );   
+var pioneerSquare = new Stores( 'Pioneer Square', 3, 24, 1.2, 'pioneer-square' );
+var powells = new Stores( 'Powell\'s', 3, 24, 1.2, 'powells' );
+var stJohns = new Stores( 'St John\'s', 3, 24, 1.2, 'stjohns' );
+var waterFront = new Stores( 'Waterfront', 3, 24, 1.2, 'waterfront' );
+
+    var allShops = [pdxAirport, pioneerSquare, powells , stJohns, waterFront];
+renderHourlyTotal();
+
+
+
+function  renderHourlyTotal () {
+    var allShops = [pdxAirport, pioneerSquare, powells , stJohns, waterFront];
+    
+    var tbody = document.getElementById( 'main' );
+    var hourlyTotalsRow = document.createElement( 'tr' );
+    var hourlyHeader = document.createElement( 'th' );
+    hourlyHeader.innerText = 'Hourly Totals';
+    hourlyTotalsRow.appendChild( hourlyHeader );
+                    
+    for( var i = 0; i < 15; i++ ) {
+        var newCell = document.createElement( 'td' );
+                
+        var colTotal = 0;
+        for ( var j = 0; j < allShops.length; j++ ) {
+            colTotal += allShops[j].avgHour[i];
+        }
+        newCell.innerText = colTotal;
+        hourlyTotalsRow.appendChild( newCell );
+    }
+     var grandTotalContainer = document.createElement( 'td' );         
+    grandTotalContainer.innerText = grandTotal ();
+    hourlyTotalsRow.appendChild( grandTotalContainer );
+    tbody.appendChild( hourlyTotalsRow );
+}                                        //grandtotal needs to be after for loop.
+                                             // things are appended left to right
+function grandTotal() {
+    var grandTotal = 0;
+    for ( var i = 0; i < allShops.length; i++ ) {
+        grandTotal += allShops[i].total;
+    }
+    return grandTotal;
 }
 
-var pdxAirport = new Stores( 'PDX Airport', 23, 65, 6.3, 'pdx-airport' );   
-var pioneerSquare = new Stores( 'Pioneer Square', 3, 24, 1.2, 'pioneer-square');
-var powells = new Stores( 'Powell\'s', 3, 24, 1.2, 'powells');
-var stJohns = new Stores( 'St John\'s', 3, 24, 1.2, 'stjohns');
-var waterFront = new Stores( 'Waterfront', 3, 24, 1.2, 'waterfront');
+    
 
 
 
@@ -46,29 +105,6 @@ var waterFront = new Stores( 'Waterfront', 3, 24, 1.2, 'waterfront');
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// pdxAirport.renderRow();
-// pioneerSquare.renderRow();
-// powells.renderRow();
-// stJohns.renderRow();
-// waterFront.renderRow();
 
 
 
