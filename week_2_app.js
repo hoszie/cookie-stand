@@ -1,15 +1,15 @@
-function Stores( name, minCust, maxCust, cookieAvg) {
+function Stores( name, minCust, maxCust, cookieAvg ) {
     this.name = name;
     this.minCust = minCust;
     this.maxCust = maxCust;
     this.cookieAvg = cookieAvg;                 
     this.avgHour = [];                          
-    this.hourlyCookieCount = [ '6am: ','7am: ','8am: ','9am: ','10am: ','11am: ','12pm: ','1pm: ','2pm: ','3pm: ','4pm: ','5pm: ','6pm: ','7pm: ','8pm: '];  //
+    this.hourlyCookieCount = [ '6am: ','7am: ','8am: ','9am: ','10am: ','11am: ','12pm: ','1pm: ','2pm: ','3pm: ','4pm: ','5pm: ','6pm: ','7pm: ','8pm: ' ];
     this.total = 0;
     this.renderRow();
 }
 
-Stores.prototype.averageCook = function () {
+Stores.prototype.getRandomAvgCookie = function () {
     for ( var i = 0; i < this.hourlyCookieCount.length; i++ ) {
         var rando = ( Math.floor( Math.random() * ( this.maxCust - this.minCust ) + this.minCust * this.cookieAvg ));
         this.avgHour.push( rando );
@@ -18,15 +18,14 @@ Stores.prototype.averageCook = function () {
 };
 
 Stores.prototype.getTotal = function () {
-    for( i = 0; i < this.avgHour.length; i++ ) {
+    for ( i = 0; i < this.avgHour.length; i++ ) {
         this.total += this.avgHour[i];
     } 
 };
 
 Stores.prototype.renderRow = function () {
-    this.averageCook();
+    this.getRandomAvgCookie();
     this.getTotal();
-    console.log(this.avgHour);
     var tbody = document.getElementsByTagName( 'tbody')[0];
     var newRow = document.createElement( 'tr' );
     
@@ -39,40 +38,33 @@ Stores.prototype.renderRow = function () {
         newCell.innerText = this.avgHour[i];
         newRow.appendChild( newCell );
     }
+
     var titleTotal = document.createElement( 'td' );
     titleTotal.innerText = this.total;
     newRow.appendChild( titleTotal );
     tbody.appendChild( newRow );
 };
 
-var form = document.getElementById( 'new-store' );
-
-form.addEventListener( 'submit', function () {
-    event.preventDefault();
-    var newShop = new Stores( this.question1.value, this.question2.value, this.question3.value, this.question4.value );
-});
-    
 var pdxAirport = new Stores( 'PDX Airport', 23, 65, 6.3, 'pdx-airport' );   
 var pioneerSquare = new Stores( 'Pioneer Square', 3, 24, 1.2, 'pioneer-square' );
 var powells = new Stores( 'Powell\'s', 3, 24, 1.2, 'powells' );
 var stJohns = new Stores( 'St John\'s', 3, 24, 1.2, 'stjohns' );
 var waterFront = new Stores( 'Waterfront', 3, 24, 1.2, 'waterfront' );
 
-    var allShops = [pdxAirport, pioneerSquare, powells , stJohns, waterFront];
+var allShops = [pdxAirport, pioneerSquare, powells , stJohns, waterFront];
+
 renderHourlyTotal();
 
-
-
 function  renderHourlyTotal () {
-    var allShops = [pdxAirport, pioneerSquare, powells , stJohns, waterFront];
+    // var allShops = [pdxAirport, pioneerSquare, powells , stJohns, waterFront];
     
-    var tbody = document.getElementById( 'main' );
+    var table = document.querySelector( 'table' );
     var hourlyTotalsRow = document.createElement( 'tr' );
     var hourlyHeader = document.createElement( 'th' );
     hourlyHeader.innerText = 'Hourly Totals';
     hourlyTotalsRow.appendChild( hourlyHeader );
                     
-    for( var i = 0; i < 15; i++ ) {
+    for ( var i = 0; i < 15; i++ ) {
         var newCell = document.createElement( 'td' );
                 
         var colTotal = 0;
@@ -82,21 +74,50 @@ function  renderHourlyTotal () {
         newCell.innerText = colTotal;
         hourlyTotalsRow.appendChild( newCell );
     }
-     var grandTotalContainer = document.createElement( 'td' );         
+    var grandTotalContainer = document.createElement( 'td' );         
     grandTotalContainer.innerText = grandTotal ();
     hourlyTotalsRow.appendChild( grandTotalContainer );
-    tbody.appendChild( hourlyTotalsRow );
-}                                        //grandtotal needs to be after for loop.
-                                             // things are appended left to right
+    table.appendChild( hourlyTotalsRow );
+
+};
+
 function grandTotal() {
     var grandTotal = 0;
     for ( var i = 0; i < allShops.length; i++ ) {
         grandTotal += allShops[i].total;
     }
     return grandTotal;
-}
+};
 
+var form = document.getElementById( 'new-store' );
+form.addEventListener( 'submit', function () {
+    event.preventDefault();
+    var newShop = new Stores( this.question1.value, this.question2.value, this.question3.value, this.question4.value );
+});
+
+// I need to plus this.total with newly added Stores. 
+
+function AddNewStoreTotal () {
+    var newAddedTotal = this.total += newShop
+}
     
+// var position = 20;
+// var speed = 3;
+
+// draw = function() {
+//     background = blue;
+    
+//     fill(66, 66, 66);
+//     position = position + speed;
+//     ellipse(position, 200, 50, 50);
+    
+//     if (position > 375) {
+//         speed = -5;
+//     }
+//     if (position < 25) {
+//         speed = 5;
+//     }
+// };
 
 
 

@@ -4,15 +4,27 @@
     <title>Pat's Daily Sales</title>
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
   
-    <link href="style_week_2.css" rel="stylesheet" type="text/css" >
+    <link href="table.css" rel="stylesheet" type="text/css" >
     
 </head>
 <body>
 <header>
-    <h1>Pat's Salmon Cookies</h1>
+    <nav>
+        <ul id="main-nav">
+            <li class="nav-item"><a href="index_home_2.html" target="_self">Home</li>
+            <li class="nav-item"><a href="about.html" target="_self">About</li>
+            <li class="nav-item"><a href="schwag.html" target="_self">Schwag</li>
+            <li class="nav-item"><a href="contact.html" target="_self">Contact</li>
+        </ul>
+        <ul id="login">
+             <li><img src="fish.jpg" alt="Cartoon Fish" id="fishes"></li>
+             <li class="nav-item"><a href="table.html" target="_self">Daily Numbers</a></li>
+        </ul>
+    </nav>
 </header>
-
-<table class= "main" id="main">
+            
+<h1>Pat's Salmon Sales</h1>
+<table id="main">
     <thead></thead>
     <tbody>
     <th></th>
@@ -35,8 +47,8 @@
     </tbody>
 <tfooter></tfooter>
 </table>
-<div class="form">
-    <form id = "new-store" action = "index.html">
+    <div class="form">
+        <form id = "new-store" action = "index.html">
         <legend><h1 id= "create">Create A New Store</h2></legend>
         <fieldset> 
             <label for = "question1">New Store</label>
@@ -57,10 +69,8 @@
         <fieldset>
         <button id="submit" type="submit">Submit</button>
         </fieldset>
-    </form>
-</div>
-    <script src="week_2_app.js" type="text/javascript"></script>
+        </form>
+    </div>
+<script src="week_2_app.js" type="text/javascript"></script>
 </body>
-
-
 </html>
